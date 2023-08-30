@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<table>
+    <thead>
+        <tr>
+            <th>Abteilungen</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for department in departments %}
+        <tr>
+            <td><a href="{{ url_for('department_list', dep=department) }}">{{ department }}</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

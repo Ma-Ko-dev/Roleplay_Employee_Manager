@@ -1,0 +1,8 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1>Zugriff nicht gestattet</h1>
+    <p>Du hast keine Berechtigung, diese Seite anzuzeigen.</p>
+    <a href="{{ url_for('login') }}">Zum Login</a>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Login</h2>
+
+    <!-- Flash-Nachrichten anzeigen -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for message in messages %}
+                    <div class="flash-message">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="input-container">
+            <label>Benutzername:</label>
+            {{ form.username(class='input-field') }}
+        </div>
+        <div class="input-container">
+            <label>Passwort:</label>
+            {{ form.password(class='input-field') }}
+        </div>
+        <div>
+            {{ form.submit() }}
+        </div>
+    </form>
+</div>
+{% endblock %}

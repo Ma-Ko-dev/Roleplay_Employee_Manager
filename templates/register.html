@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Registrierung</h2>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="input-container">
+            <label>Benutzername</label>
+            {{ form.username(class='input-field') }}
+        </div>
+        <div class="input-container">
+            <label>Passwort</label>
+            {{ form.password(class='input-field') }}
+        </div>
+        <div class="input-container">
+            <label>Passwort bestätigen</label>
+            {{ form.confirm_password(class='input-field') }}
+        </div>
+        <div>
+            {{ form.submit() }}
+        </div>
+    </form>
+</div>
+{% endblock %}

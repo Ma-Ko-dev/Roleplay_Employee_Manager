@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Position</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for employee in employees %}
+        <tr>
+            <td><a href="{{ url_for('employee_detail', employee_id=employee.id) }}">{{ employee.name }}</a></td>
+            <td>{{ employee.position }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="back-link">
+    <a href="/">Zurück zur Startseite</a>
+</div>
+{% endblock %}

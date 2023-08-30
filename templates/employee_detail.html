@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="details">
+    <h1>{{ employee.name }}</h1>
+    <p><strong>Abteilung:</strong> {{ employee.department }}</p>
+    <p><strong>Rang:</strong> {{ employee.position }}</p>
+    <p><strong>OOC-Alter:</strong> {{ employee.ooc_age }}</p>
+    <p><strong>IG-Alter:</strong> {{ employee.ig_age }}</p>
+    <p><strong>Einstellungsdatum:</strong> {{ employee.hire_date.strftime('%d.%m.%Y') }}</p>
+    <p><strong>Kündigungsdatum:</strong> {{ employee.termination_date }}</p>
+    <p><strong>Discord Handle:</strong> {{ employee.discord_handle }}</p>
+</div>
+
+<div class="details">
+    <h2>Letzten Akteneinträge</h2>
+    <ul>
+        {% for note in employee.notes|sort(attribute='created_at', reverse=true) %}
+            {% if loop.index <= 5 %}
+                <li>{{ note.created_at.strftime('%d.%m.%Y') }} - {{ note.text }}</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="back-link">
+    <a href="{{ url_for('department_list', dep=employee.department) }}">Zurück zur Mitarbeiterliste</a>
+</div>
+
+{% endblock %}
