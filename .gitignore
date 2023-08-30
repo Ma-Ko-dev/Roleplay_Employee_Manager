@@ -161,5 +161,11 @@ cython_debug/
 /schichtstats.txt
 /dbstuff.py
 /employee.db
-/Notruf 040 - FivePD - Feuerwehr - schichtlog [1141345128066334800].json
+*.json
 /schicht_analyzer.py
+/.idea/fivem_mitarbeiter.iml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/vcs.xml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/inspectionProfiles/Project_Default.xml
