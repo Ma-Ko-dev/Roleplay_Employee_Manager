@@ -159,3 +159,7 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 /schichtstats.txt
+/dbstuff.py
+/employee.db
+/Notruf 040 - FivePD - Feuerwehr - schichtlog [1141345128066334800].json
+/schicht_analyzer.py
