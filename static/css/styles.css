@@ -76,9 +76,17 @@ a:hover {
     margin-bottom: 20px;
 }
 
-.flash-message {
+.flash-message.danger {
     background-color: #e74c3c;
     color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.flash-message.success {
+    background-color: lightgreen;
+    color: black;
     padding: 10px;
     border-radius: 5px;
     margin-bottom: 10px;
