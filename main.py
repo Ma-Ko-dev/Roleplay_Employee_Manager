@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, Date, DateTime, Float
+from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, Date, DateTime, Float, Boolean
 from sqlalchemy.orm import declarative_base, relationship
 from flask_login import UserMixin
 
@@ -54,6 +54,8 @@ class RegisteredUser(Base, UserMixin):
     id = Column(Integer, primary_key=True)
     username = Column(String, nullable=False, unique=True)
     password = Column(String, nullable=False)
+    role = Column(String, nullable=False, default="user")
+    is_admin = Column(Boolean, default=False)
 
     def __init__(self, username, password):
         self.username = username
