@@ -108,6 +108,12 @@ def login():
         if user and check_password_hash(user.password, password):
             # Benutzer erfolgreich eingeloggt
             login_user(user)
+            # Admin flag setzen
+            if user.role == "admin":
+                user.is_admin = True
+            else:
+                user.us_admin = False
+
             return redirect(url_for('index'))
         else:
             flash('Falscher Benutzername oder Passwort', 'danger')
