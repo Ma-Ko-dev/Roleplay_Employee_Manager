@@ -54,7 +54,6 @@ class RegisteredUser(Base, UserMixin):
     id = Column(Integer, primary_key=True)
     username = Column(String, nullable=False, unique=True)
     password = Column(String, nullable=False)
-    role = Column(String, nullable=False, default="user")
     is_admin = Column(Boolean, default=False)
 
     def __init__(self, username, password):
