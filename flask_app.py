@@ -39,6 +39,12 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Anmelden')
 
 
+# Settings Form
+class SettingsForm(FlaskForm):
+    department = StringField('Abteilung hinzufügen', validators=[DataRequired()])
+    submit = SubmitField('Hinzufügen')
+
+
 @login_manager.user_loader
 def load_user(user_id):
     return db_session.query(RegisteredUser).get(int(user_id))
@@ -73,7 +79,26 @@ def department_list(dep):
 @login_required
 def employee_detail(employee_id):
     employee = db_session.query(Employee).get(employee_id)
-    return render_template('employee_detail.html', employee=employee)
+    return render_template('employee_detail.html', employee=employee, title="Mitarbeiterdetails")
+
+
+@app.route('/settings', methods=['GET', 'POST'])
+@login_required
+def settings():
+    form = SettingsForm()
+    departments = db_session.query(Employee.department).distinct().all()
+    departments = [department[0] for department in departments]
+
+    if not departments:
+        departments.append("Keine Einträge gefunden.")
+
+    if form.validate_on_submit():
+        department = form.department.data
+        print(department)
+        # Abteilung zur DB hinzufuegen.
+        flash("Abteilung hinzugefügt", "success")
+
+    return render_template('settings.html', departments=departments, form=form, title="Einstellungen")
 
 
 @app.route('/register', methods=['GET', 'POST'])

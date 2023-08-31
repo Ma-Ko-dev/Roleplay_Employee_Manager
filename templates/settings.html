@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Einstellungen</h2>
+
+    <!-- Hier die Flash-Nachrichten anzeigen -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for message in messages %}
+                    <div class="flash-message">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="input-container">
+            <label>Abteilung hinzufügen</label>
+            {{ form.department(class='input-field') }}
+        </div>
+        <div>
+            {{ form.submit() }}
+        </div>
+    </form>
+</div>
+
+<div class="container">
+    <h3>Aktuelle Abteilungen</h3>
+    {% for department in departments %}
+        <p>{{ department }}</p>
+    {% endfor %}
+</div>
+
+<div class="back-link">
+    <a href="{{ url_for('index') }}">Zurück</a>
+</div>
+
+{% endblock %}
