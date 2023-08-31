@@ -47,6 +47,15 @@ class SettingsForm(FlaskForm):
     submit = SubmitField('Hinzufügen')
 
 
+# Add Employee Form
+class AddEmployeeForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    department = StringField('Abteilung', validators=[DataRequired()])
+    position = StringField('Position', validators=[DataRequired()])
+    # TODO restliche inputs einfuegen
+    submit = SubmitField('Mitarbeiter hinzufügen')
+
+
 @login_manager.user_loader
 def load_user(user_id):
     return db_session.query(RegisteredUser).get(int(user_id))
@@ -61,7 +70,8 @@ def unauthorized():
 @app.route('/')
 @login_required
 def index():
-    departments = db_session.query(Employee.department).distinct().all()
+    # departments = db_session.query(Employee.department).distinct().all()
+    departments = db_session.query(Department.name).distinct().all()
     departments = [department[0] for department in departments]
 
     if not departments:
@@ -74,7 +84,7 @@ def index():
 @login_required
 def department_list(dep):
     employees = db_session.query(Employee).filter_by(department=dep).all()
-    return render_template('department_list.html', employees=employees, title="Mitarbeiterliste")
+    return render_template('department_list.html', employees=employees, dep=dep, title="Mitarbeiterliste")
 
 
 @app.route('/employee/<int:employee_id>')
@@ -111,6 +121,25 @@ def settings():
 
     db_session.close()
     return render_template('settings.html', departments=departments, form=form, title="Einstellungen")
+
+
+@app.route('/add_employee/<string:department>', methods=['GET', 'POST'])
+@login_required
+def add_employee(department):
+    form = AddEmployeeForm()
+
+    if form.validate_on_submit():
+        name = form.name.data
+        position = form.position.data
+
+        new_employee = Employee(name=name, position=position, department=department)
+        db_session.add(new_employee)
+        db_session.commit()
+
+        flash("Mitarbeiter hinzugefügt", "success")
+        return redirect(url_for('employee_list'))
+
+    return render_template('add_employee.html', form=form, dep=department, title="Mitarbeiter hinzufügen")
 
 
 @app.route('/register', methods=['GET', 'POST'])

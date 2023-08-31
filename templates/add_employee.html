@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="container">
+    <h2>Mitarbeiter hinzufügen</h2>
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="input-container">
+            <label>Name:</label>
+            {{ form.name(class='input-field') }}
+        </div>
+        <div class="input-container">
+            <label>Abteilung:</label>
+            {{ form.department(class='input-field') }}
+        </div>
+        <div class="input-container">
+            <label>Position:</label>
+            {{ form.position(class='input-field') }}
+<!--            TODO default wert aus dep-->
+        </div>
+        <div class="input-container">
+            <label>OOC Alter</label>
+        </div>
+        <div class="input-container">
+            <label>IG Alter</label>
+        </div>
+        <div class="input-container">
+            <label>Einstellungsdatum</label>
+        </div>
+        <div class="input-container">
+            <label>Kündigungsdatum</label>
+        </div>
+        <div class="input-container">
+<!--            #TODO restliche form inputs einfuegen-->
+            <label>Discord handle</label>
+        </div>
+
+        <div>
+            {{ form.submit() }}
+        </div>
+    </form>
+</div>
+
+<div class="back-link">
+    <a href="{{ url_for('department_list', dep=dep) }}">Zurück zur Abteilungsliste</a>
+</div>
+
+{% endblock %}
