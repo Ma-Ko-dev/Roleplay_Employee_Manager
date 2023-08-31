@@ -61,6 +61,12 @@ class RegisteredUser(Base, UserMixin):
         self.password = password
 
 
+class Department(Base):
+    __tablename__ = 'departments'
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False, unique=True)
+
+
 # # Tabelle in der Datenbank erstellen
 Base.metadata.create_all(engine)
 
