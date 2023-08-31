@@ -1,8 +1,10 @@
+from sqlite3 import IntegrityError
+
 from flask import Flask, render_template, redirect, url_for, flash
 from flask_login import login_required, LoginManager, login_user, logout_user
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from main import Employee, RegisteredUser
+from main import Employee, RegisteredUser, Department
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, EqualTo, DataRequired
@@ -86,7 +88,7 @@ def employee_detail(employee_id):
 @login_required
 def settings():
     form = SettingsForm()
-    departments = db_session.query(Employee.department).distinct().all()
+    departments = db_session.query(Department.name).distinct().all()
     departments = [department[0] for department in departments]
 
     if not departments:
@@ -94,10 +96,20 @@ def settings():
 
     if form.validate_on_submit():
         department = form.department.data
-        print(department)
-        # Abteilung zur DB hinzufuegen.
-        flash("Abteilung hinzugefügt", "success")
+        if department in departments:
+            flash('Abteilung existiert bereits.', 'danger')
+        else:
+            new_department = Department(name=department)
+            db_session.add(new_department)
+            try:
+                db_session.commit()
+                flash("Abteilung hinzugefügt", "success")
+            except IntegrityError:
+                db_session.rollback()
+                flash('Fehler beim Hinzufügen der Abteilung', 'danger')
+        return redirect(url_for('settings'))
 
+    db_session.close()
     return render_template('settings.html', departments=departments, form=form, title="Einstellungen")
 
 
@@ -109,11 +121,20 @@ def register():
         username = form.username.data.lower()
         password = form.password.data
 
-        hashed_password = generate_password_hash(password)
-
-        new_user = RegisteredUser(username=username, password=hashed_password)
-        db_session.add(new_user)
-        db_session.commit()
+        existing_user = db_session.query(RegisteredUser).filter_by(username=username).first()
+        if existing_user:
+            flash("Benutzername existiert bereits", "danger")
+            return render_template('register.html', form=form, title="Registrierung")
+        else:
+            hashed_password = generate_password_hash(password)
+            new_user = RegisteredUser(username=username, password=hashed_password)
+            db_session.add(new_user)
+            try:
+                db_session.commit()
+            except IntegrityError:
+                db_session.rollback()
+                flash("Fehler beim Registrieren des Benutzers", "danger")
+                return render_template('register.html', form=form, title="Registrierung")
 
         db_session.close()
         return redirect(url_for('login'))
