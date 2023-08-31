@@ -169,3 +169,4 @@ cython_debug/
 /.idea/vcs.xml
 /.idea/inspectionProfiles/profiles_settings.xml
 /.idea/inspectionProfiles/Project_Default.xml
+/employee.db-journal
