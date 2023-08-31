@@ -10,9 +10,16 @@
     <tbody>
         {% for department in departments %}
         <tr>
-            <td><a href="{{ url_for('department_list', dep=department) }}">{{ department }}</a></td>
+            <td>
+                {% if department != "Keine Einträge gefunden." %}
+                    <a href="{{ url_for('department_list', dep=department) }}">{{ department }}</a>
+                {% else %}
+                    {{ department }}
+                {% endif %}
+            </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+
 {% endblock %}
