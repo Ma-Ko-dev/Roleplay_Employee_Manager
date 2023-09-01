@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_login import login_required, LoginManager, login_user, logout_user
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, and_
 from sqlalchemy.orm import sessionmaker
 from sqlite3 import IntegrityError
 from main import Employee, RegisteredUser, Department
@@ -104,27 +104,37 @@ def add_employee(department):
 
     if form.validate_on_submit():
         name = form.name.data
-        position = form.position.data
-        ooc_age = form.ooc_age.data
-        ig_age = form.ig_age.data
-        hire_date = datetime.strptime(form.hire_date.data, "%d.%m.%Y").date()
-        discord_handle = form.discord_handle.data
 
-        new_employee = Employee(
-            name=name,
-            department=department,
-            position=position,
-            ooc_age=ooc_age,
-            ig_age=ig_age,
-            hire_date=hire_date,
-            discord_handle=discord_handle
-        )
-        db_session.add(new_employee)
-        db_session.commit()
+        existing_employee = db_session.query(Employee).filter(and_(Employee.name == name,
+                                                                   Employee.department == department)).first()
+        if existing_employee:
+            flash("Ein Mitarbeiter mit diesem Namen existiert bereits.", "danger")
+        else:
+            position = form.position.data
+            ooc_age = form.ooc_age.data
+            ig_age = form.ig_age.data
+            hire_date = datetime.strptime(form.hire_date.data, "%d.%m.%Y").date()
+            discord_handle = form.discord_handle.data
 
-        flash("Mitarbeiter hinzugefügt", "success")
-        return redirect(url_for('department_list', dep=department))
+            new_employee = Employee(
+                name=name,
+                department=department,
+                position=position,
+                ooc_age=ooc_age,
+                ig_age=ig_age,
+                hire_date=hire_date,
+                discord_handle=discord_handle
+            )
+            db_session.add(new_employee)
+            try:
+                db_session.commit()
+                flash("Mitarbeiter hinzugefügt", "success")
+            except IntegrityError:
+                db_session.rollback()
+                flash("Fehler beim hinzufügen des Mitarbeiters", "danger")
 
+            return redirect(url_for('department_list', dep=department))
+    db_session.close()
     return render_template('add_employee.html', form=form, dep=department, hire_date_default=hire_date_default, title="Mitarbeiter hinzufügen")
 
 
