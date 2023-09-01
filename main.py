@@ -17,7 +17,7 @@ class Employee(Base):
     ig_age = Column(Integer)
     department = Column(String)
     hire_date = Column(Date)
-    termination_date = Column(Date)
+    termination_date = Column(Date, default=None)
     discord_handle = Column(String, nullable=False, unique=True)
 
     # Hier die Beziehung zu den Notizen
@@ -73,22 +73,6 @@ Base.metadata.create_all(engine)
 # Mit der Datenbank interagieren
 # Session = sessionmaker(bind=engine)
 # session = Session()
-
-# Mitarbeiter hinzufügen
-# new_employee = Employee(
-#     name='Gariot Grau',
-#     position='Leitender Branddirektor',
-#     ooc_age=38,
-#     ig_age=38,
-#     department='Feuerwehr',
-#     hire_date=datetime.strptime('15.06.2023', '%d.%m.%Y'),
-#     termination_date=None,
-#     discord_handle='Gariot.Grau#1234'
-# )
-
-# Füge den neuen Mitarbeiter zur Datenbank hinzu
-# session.add(new_employee)
-# session.commit()
 
 # Notiz hinzufügen
 # Finde den Mitarbeiter "John Doe" in der Datenbank

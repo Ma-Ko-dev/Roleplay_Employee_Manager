@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, flash
+from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_login import login_required, LoginManager, login_user, logout_user
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -8,7 +8,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, EqualTo, DataRequired
 from werkzeug.security import check_password_hash, generate_password_hash
-from datetime import date
+from datetime import datetime
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'MySecretKey'
@@ -50,12 +50,11 @@ class SettingsForm(FlaskForm):
 # Add Employee Form
 class AddEmployeeForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
-    department = StringField('Abteilung', default='', render_kw={'readonly': True})
+    department = StringField('Abteilung', default='')
     position = StringField('Position', validators=[DataRequired()])
     ooc_age = StringField('OOC Alter', validators=[DataRequired()])
     ig_age = StringField('IG Alter', validators=[DataRequired()])
     hire_date = StringField('Einstellungsdatum', default='', validators=[DataRequired()])
-    termination_date = StringField('Kündigungsdatum', validators=[DataRequired()])
     discord_handle = StringField('Discord handle', validators=[DataRequired()])
     submit = SubmitField('Mitarbeiter hinzufügen')
 
@@ -101,22 +100,33 @@ def employee_detail(employee_id):
 @login_required
 def add_employee(department):
     form = AddEmployeeForm()
-    form.department.default = department
-    form.hire_date.default = date.today().strftime("%d.%m.%Y")
-    form.process()
+    hire_date_default = datetime.today().strftime("%d.%m.%Y")
 
     if form.validate_on_submit():
+        print("validated")
         name = form.name.data
         position = form.position.data
+        ooc_age = form.ooc_age.data
+        ig_age = form.ig_age.data
+        hire_date = datetime.strptime(form.hire_date.data, "%d.%m.%Y").date()
+        discord_handle = form.discord_handle.data
 
-        new_employee = Employee(name=name, position=position, department=department)
+        new_employee = Employee(
+            name=name,
+            department=department,
+            position=position,
+            ooc_age=ooc_age,
+            ig_age=ig_age,
+            hire_date=hire_date,
+            discord_handle=discord_handle
+        )
         db_session.add(new_employee)
         db_session.commit()
 
         flash("Mitarbeiter hinzugefügt", "success")
-        return redirect(url_for('employee_list'))
+        return redirect(url_for('department_list', dep=department))
 
-    return render_template('add_employee.html', form=form, dep=department, title="Mitarbeiter hinzufügen")
+    return render_template('add_employee.html', form=form, dep=department, hire_date_default=hire_date_default, title="Mitarbeiter hinzufügen")
 
 
 @app.route('/settings', methods=['GET', 'POST'])
