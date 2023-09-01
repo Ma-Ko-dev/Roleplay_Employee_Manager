@@ -1,14 +1,14 @@
-from sqlite3 import IntegrityError
-
 from flask import Flask, render_template, redirect, url_for, flash
 from flask_login import login_required, LoginManager, login_user, logout_user
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlite3 import IntegrityError
 from main import Employee, RegisteredUser, Department
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, EqualTo, DataRequired
 from werkzeug.security import check_password_hash, generate_password_hash
+from datetime import date
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'MySecretKey'
@@ -50,11 +50,11 @@ class SettingsForm(FlaskForm):
 # Add Employee Form
 class AddEmployeeForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
-    department = StringField('Abteilung', validators=[DataRequired()])
+    department = StringField('Abteilung', default='', render_kw={'readonly': True})
     position = StringField('Position', validators=[DataRequired()])
     ooc_age = StringField('OOC Alter', validators=[DataRequired()])
     ig_age = StringField('IG Alter', validators=[DataRequired()])
-    hire_date = StringField('Einstellungsdatum', validators=[DataRequired()])
+    hire_date = StringField('Einstellungsdatum', default='', validators=[DataRequired()])
     termination_date = StringField('Kündigungsdatum', validators=[DataRequired()])
     discord_handle = StringField('Discord handle', validators=[DataRequired()])
     submit = SubmitField('Mitarbeiter hinzufügen')
@@ -101,6 +101,9 @@ def employee_detail(employee_id):
 @login_required
 def add_employee(department):
     form = AddEmployeeForm()
+    form.department.default = department
+    form.hire_date.default = date.today().strftime("%d.%m.%Y")
+    form.process()
 
     if form.validate_on_submit():
         name = form.name.data
