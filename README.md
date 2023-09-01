@@ -3,6 +3,7 @@
 Dies ist ein einfaches Mitarbeiterverwaltungstool, das entwickelt wurde, um Mitarbeiterdaten effizient zu verwalten. Es ermöglicht die Registrierung von Benutzern, das Anmelden, Anzeigen von Mitarbeiterinformationen und vieles mehr.
 
 **Hinweis:** Dieses Projekt ist derzeit in der Entwicklungsphase. Einige Funktionen können fehlen oder fehlerhaft sein, da es sich um ein "Work in Progress" handelt.
+*TODO Liste kann man [hier](TODO.md) finden*
 
 ## Funktionen
 
