@@ -52,7 +52,11 @@ class AddEmployeeForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     department = StringField('Abteilung', validators=[DataRequired()])
     position = StringField('Position', validators=[DataRequired()])
-    # TODO restliche inputs einfuegen
+    ooc_age = StringField('OOC Alter', validators=[DataRequired()])
+    ig_age = StringField('IG Alter', validators=[DataRequired()])
+    hire_date = StringField('Einstellungsdatum', validators=[DataRequired()])
+    termination_date = StringField('Kündigungsdatum', validators=[DataRequired()])
+    discord_handle = StringField('Discord handle', validators=[DataRequired()])
     submit = SubmitField('Mitarbeiter hinzufügen')
 
 
@@ -70,7 +74,6 @@ def unauthorized():
 @app.route('/')
 @login_required
 def index():
-    # departments = db_session.query(Employee.department).distinct().all()
     departments = db_session.query(Department.name).distinct().all()
     departments = [department[0] for department in departments]
 
@@ -92,6 +95,25 @@ def department_list(dep):
 def employee_detail(employee_id):
     employee = db_session.query(Employee).get(employee_id)
     return render_template('employee_detail.html', employee=employee, title="Mitarbeiterdetails")
+
+
+@app.route('/add_employee/<string:department>', methods=['GET', 'POST'])
+@login_required
+def add_employee(department):
+    form = AddEmployeeForm()
+
+    if form.validate_on_submit():
+        name = form.name.data
+        position = form.position.data
+
+        new_employee = Employee(name=name, position=position, department=department)
+        db_session.add(new_employee)
+        db_session.commit()
+
+        flash("Mitarbeiter hinzugefügt", "success")
+        return redirect(url_for('employee_list'))
+
+    return render_template('add_employee.html', form=form, dep=department, title="Mitarbeiter hinzufügen")
 
 
 @app.route('/settings', methods=['GET', 'POST'])
@@ -121,25 +143,6 @@ def settings():
 
     db_session.close()
     return render_template('settings.html', departments=departments, form=form, title="Einstellungen")
-
-
-@app.route('/add_employee/<string:department>', methods=['GET', 'POST'])
-@login_required
-def add_employee(department):
-    form = AddEmployeeForm()
-
-    if form.validate_on_submit():
-        name = form.name.data
-        position = form.position.data
-
-        new_employee = Employee(name=name, position=position, department=department)
-        db_session.add(new_employee)
-        db_session.commit()
-
-        flash("Mitarbeiter hinzugefügt", "success")
-        return redirect(url_for('employee_list'))
-
-    return render_template('add_employee.html', form=form, dep=department, title="Mitarbeiter hinzufügen")
 
 
 @app.route('/register', methods=['GET', 'POST'])

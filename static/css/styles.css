@@ -120,6 +120,34 @@ a:hover {
     align-items: center;
 }
 
+
+/* Form grid 4x2 */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+}
+
+.submit-button-container {
+    text-align: center;
+    grid-column: span 2;
+    margin-top: 5px;
+}
+
+.submit-button-container input[type="submit"] {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.submit-button-container input[type="submit"]:hover {
+    background-color: #5a6268;
+}
+
 input[type="submit"] {
     background-color: #6c757d;
     color: white;

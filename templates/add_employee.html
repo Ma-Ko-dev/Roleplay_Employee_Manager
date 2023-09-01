@@ -7,38 +7,44 @@
 
     <form method="POST">
         {{ form.hidden_tag() }}
-        <div class="input-container">
-            <label>Name:</label>
-            {{ form.name(class='input-field') }}
-        </div>
-        <div class="input-container">
-            <label>Abteilung:</label>
-            {{ form.department(class='input-field') }}
-        </div>
-        <div class="input-container">
-            <label>Position:</label>
-            {{ form.position(class='input-field') }}
-<!--            TODO default wert aus dep-->
-        </div>
-        <div class="input-container">
-            <label>OOC Alter</label>
-        </div>
-        <div class="input-container">
-            <label>IG Alter</label>
-        </div>
-        <div class="input-container">
-            <label>Einstellungsdatum</label>
-        </div>
-        <div class="input-container">
-            <label>Kündigungsdatum</label>
-        </div>
-        <div class="input-container">
-<!--            #TODO restliche form inputs einfuegen-->
-            <label>Discord handle</label>
-        </div>
+        <div class="form-grid">
+            <div class="input-container">
+                <label>{{ form.name.label.text }}:</label>
+                {{ form.name(class='input-field') }}
+            </div>
+            <div class="input-container">
+                <label>{{ form.department.label.text }}:</label>
+                {{ form.department(class='input-field') }}
+            </div>
+            <div class="input-container">
+                <label>{{ form.position.label.text }}:</label>
+                {{ form.position(class='input-field') }}
+    <!--            TODO default wert aus dep-->
+            </div>
+            <div class="input-container">
+                <label>{{ form.ooc_age.label.text }}:</label>
+                {{ form.ooc_age(class='input-field') }}
+            </div>
+            <div class="input-container">
+                <label>{{ form.ig_age.label.text }}:</label>
+                {{ form.ig_age(class='input-field') }}
+            </div>
+            <div class="input-container">
+                <label>{{ form.hire_date.label.text }}:</label>
+                {{ form.hire_date(class='input-field') }}
+            </div>
+            <div class="input-container">
+                <label>{{ form.termination_date.label.text }}:</label>
+                {{ form.termination_date(class='input-field') }}
+            </div>
+            <div class="input-container">
+                <label>{{ form.discord_handle.label.text }}:</label>
+                {{ form.discord_handle(class='input-field') }}
+            </div>
 
-        <div>
-            {{ form.submit() }}
+            <div class="submit-button-container">
+                {{ form.submit() }}
+            </div>
         </div>
     </form>
 </div>
