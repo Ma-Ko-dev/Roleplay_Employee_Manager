@@ -103,7 +103,6 @@ def add_employee(department):
     hire_date_default = datetime.today().strftime("%d.%m.%Y")
 
     if form.validate_on_submit():
-        print("validated")
         name = form.name.data
         position = form.position.data
         ooc_age = form.ooc_age.data

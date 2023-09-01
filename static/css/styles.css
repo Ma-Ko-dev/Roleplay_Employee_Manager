@@ -82,6 +82,8 @@ a:hover {
     padding: 10px;
     border-radius: 5px;
     margin-bottom: 10px;
+    font-weight: bold;
+    text-align: center;
 }
 
 .flash-message.success {
@@ -90,6 +92,8 @@ a:hover {
     padding: 10px;
     border-radius: 5px;
     margin-bottom: 10px;
+    font-weight: bold;
+    text-align: center;
 }
 
 /* Gemeinsame Styles für Eingabefelder */
