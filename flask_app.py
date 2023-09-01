@@ -76,9 +76,6 @@ def index():
     departments = db_session.query(Department.name).distinct().all()
     departments = [department[0] for department in departments]
 
-    if not departments:
-        departments.append("Keine Einträge gefunden.")
-
     return render_template('index.html', departments=departments, title="Personal Verwaltungs System")
 
 

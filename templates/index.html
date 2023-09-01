@@ -1,6 +1,8 @@
 {% extends "layout.html" %}
 
 {% block content %}
+
+{% if departments %}
 <table>
     <thead>
         <tr>
@@ -11,15 +13,17 @@
         {% for department in departments %}
         <tr>
             <td>
-                {% if department != "Keine Einträge gefunden." %}
-                    <a href="{{ url_for('department_list', dep=department) }}">{{ department }}</a>
-                {% else %}
-                    {{ department }}
-                {% endif %}
+                <a href="{{ url_for('department_list', dep=department) }}">{{ department }}</a>
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+{% else %}
+<div class="center-container">
+    <div class="center-text">Keine Abteilungen vorhanden</div>
+</div>
+{% endif %}
+
 
 {% endblock %}

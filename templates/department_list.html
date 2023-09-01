@@ -11,6 +11,8 @@
             </div>
         {% endif %}
     {% endwith %}
+
+{% if employees %}
 <table>
     <thead>
         <tr>
@@ -27,6 +29,12 @@
         {% endfor %}
     </tbody>
 </table>
+{% else %}
+<div class="center-container">
+    <div class="center-text">Keine Mitarbeiter vorhanden</div>
+</div>
+{% endif %}
+
 <div class="back-link">
     <a href="{{ url_for('add_employee', department=dep) }}">Mitarbeiter hinzufügen</a>
 </div>
