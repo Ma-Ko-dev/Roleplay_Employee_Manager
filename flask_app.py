@@ -142,9 +142,6 @@ def settings():
     departments = db_session.query(Department.name).distinct().all()
     departments = [department[0] for department in departments]
 
-    if not departments:
-        departments.append("Keine Einträge gefunden.")
-
     if form.validate_on_submit():
         department = form.department.data
         if department in departments:
@@ -162,6 +159,27 @@ def settings():
 
     db_session.close()
     return render_template('settings.html', departments=departments, form=form, title="Einstellungen")
+
+
+@app.route('/delete_department/<string:department>')
+@login_required
+def delete_department(department):
+    # Zuerst überprüfen, ob die Abteilung existiert, bevor sie gelöscht wird.
+    department_to_delete = db_session.query(Department).filter_by(name=department).first()
+
+    if department_to_delete:
+        try:
+            db_session.delete(department_to_delete)
+            db_session.commit()
+            flash(f"Abteilung '{department}' wurde gelöscht", "success")
+        except Exception as e:
+            flash(f"Fehler beim Löschen der Abteilung '{department}': {str(e)}", "danger")
+        finally:
+            db_session.close()
+    else:
+        flash(f"Abteilung '{department}' wurde nicht gefunden und konnte nicht gelöscht werden", "danger")
+
+    return redirect(url_for('settings'))
 
 
 @app.route('/register', methods=['GET', 'POST'])

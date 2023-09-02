@@ -29,9 +29,18 @@
 
 <div class="container">
     <h3>Aktuelle Abteilungen</h3>
-    {% for department in departments %}
-        <p>{{ department }}</p>
-    {% endfor %}
+    {% if departments %}
+        {% for department in departments %}
+            <p>
+                {{ department }}
+                <a href="{{ url_for('delete_department', department=department) }}">
+                    <span style="color: red; margin-left: 10px;">&#x2716;</span>
+                </a>
+            </p>
+        {% endfor %}
+    {% else %}
+        <p>Keine Abteilungen gefunden.</p>
+    {% endif %}
 </div>
 
 <div class="back-link">

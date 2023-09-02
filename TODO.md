@@ -1,7 +1,7 @@
 # TODO Liste 
 Dinge die noch erledigt werden muessen bevor ich das Projekt als funktionsfaehig betrachte:
 
-- Abteilungen loeschen
+- Abteilungen loeschen ✅
 - Registrierte Nutzer muessen freigeschaltet werden.
 - Nutzer haben nur zu bestimmten Abteilungen zugriff.
 - Mitarbeiter hinzufuegen. ✅
