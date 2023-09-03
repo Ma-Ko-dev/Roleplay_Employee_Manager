@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <!-- Hier die Flash-Nachrichten anzeigen -->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+<form method="POST">
+  {{ form.hidden_tag() }}
+  <div class="add-employee-form-container">
+    <div class="add-employee-form-group">
+      <label for="{{ form.author.id }}">{{ form.author.label.text }}:</label>
+      <input type="text" id="author" name="author" class="add-employee-input" value="{{ current_user.username.capitalize() }}" readonly>
+    </div>
+    <div class="add-employee-form-group">
+      <label for="{{ form.timestamp.id }}">{{ form.timestamp.label.text }}:</label>
+      <input type="text" id="timestamp" name="timestamp" class="add-employee-input" value="{{ form.timestamp.data }}" readonly>
+    </div>
+    <div class="add-employee-form-group">
+      <label for="{{ form.note_type.id }}">{{ form.note_type.label.text }}:</label>
+      <select id="note_type" name="note_type" class="add-employee-dropdown">
+        <option value="notiz">Notiz</option>
+        <option value="positiv">Positiv</option>
+        <option value="negativ">Negativ</option>
+      </select>
+    </div>
+    <div class="add-employee-form-group">
+      <label for="{{ form.note_text.id }}">{{ form.note_text.label.text }}:</label>
+      <textarea id="note_text" name="note_text" class="add-employee-textarea" placeholder="Text eingeben"></textarea>
+    </div>
+      <div>
+    {{ form.submit() }}
+  </div>
+  </div>
+
+  <div class="back-link">
+    <a href="{{ url_for('employee_detail', employee_id=employee_id) }}">Zurück zur Mitarbeiterdetails</a>
+</div>
+</form>
+
+
+
+
+
+
+
+{% endblock %}

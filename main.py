@@ -31,8 +31,9 @@ class Note(Base):
     id = Column(Integer, primary_key=True)
     employee_id = Column(Integer, ForeignKey('employees.id'), nullable=False)
     creator_name = Column(String)
-    text = Column(Text)
-    created_at = Column(DateTime, default=datetime.now)  # Neues Feld für das Erstellungsdatum
+    text = Column(Text, nullable=False)
+    created_at = Column(DateTime)
+    note_type = Column(String)
 
     employee = relationship("Employee", back_populates="notes")
 

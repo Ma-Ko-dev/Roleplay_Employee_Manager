@@ -3,9 +3,9 @@ from flask_login import login_required, LoginManager, login_user, logout_user
 from sqlalchemy import create_engine, and_
 from sqlalchemy.orm import sessionmaker
 from sqlite3 import IntegrityError
-from main import Employee, RegisteredUser, Department
+from main import Employee, RegisteredUser, Department, Note
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, SelectField, TextAreaField
 from wtforms.validators import InputRequired, EqualTo, DataRequired
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime
@@ -59,6 +59,15 @@ class AddEmployeeForm(FlaskForm):
     submit = SubmitField('Mitarbeiter hinzufügen')
 
 
+# Add Employee Note
+class EmployeeNoteForm(FlaskForm):
+    author = StringField('Verfasser')
+    timestamp = StringField('Datum und Uhrzeit', default=datetime.now().strftime("%d.%m.%Y - %H:%M Uhr"))
+    note_type = SelectField('Kategorie', choices=[('notiz', 'Notiz'), ('positiv', 'Positiv'), ('negativ', 'Negativ')])
+    note_text = TextAreaField('Akteneintrag', validators=[DataRequired()])
+    submit = SubmitField('Notiz hinzufügen')
+
+
 @login_manager.user_loader
 def load_user(user_id):
     return db_session.query(RegisteredUser).get(int(user_id))
@@ -90,7 +99,8 @@ def department_list(dep):
 @login_required
 def employee_detail(employee_id):
     employee = db_session.query(Employee).get(employee_id)
-    return render_template('employee_detail.html', employee=employee, title="Mitarbeiterdetails")
+    return render_template('employee_detail.html', employee=employee, employee_id=employee_id,
+                           title="Mitarbeiterdetails")
 
 
 @app.route('/add_employee/<string:department>', methods=['GET', 'POST'])
@@ -132,7 +142,29 @@ def add_employee(department):
 
             return redirect(url_for('department_list', dep=department))
     db_session.close()
-    return render_template('add_employee.html', form=form, dep=department, hire_date_default=hire_date_default, title="Mitarbeiter hinzufügen")
+    return render_template('add_employee.html', form=form, dep=department, hire_date_default=hire_date_default,
+                           title="Mitarbeiter hinzufügen")
+
+
+@app.route('/add_employee_note/<int:employee_id>', methods=['GET', 'POST'])
+@login_required
+def add_employee_note(employee_id):
+    form = EmployeeNoteForm()
+
+    if request.method == 'POST':
+        if form.note_text.data.strip() == '':
+            flash("Kein Text eingegeben", "danger")
+        elif form.validate_on_submit():
+            # note_text = form.note_text.data  # Hier holst du den Text der Notiz aus dem Formular
+            # Hier könntest du die Notiz in der Datenbank speichern und sie mit dem Mitarbeiter verknüpfen
+            # Zum Beispiel: employee = Employee.query.get(employee_id)
+            #               note = EmployeeNote(text=note_text, employee=employee)
+            #               db_session.add(note)
+            #               db_session.commit()
+            flash("Notiz hinzugefügt", "success")
+            return redirect(url_for('employee_detail', employee_id=employee_id))
+
+    return render_template('add_employee_note.html', employee_id=employee_id, form=form, title="Notiz hinzufügen")
 
 
 @app.route('/settings', methods=['GET', 'POST'])

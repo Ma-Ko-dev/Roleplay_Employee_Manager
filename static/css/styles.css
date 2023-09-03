@@ -183,6 +183,65 @@ input[type="submit"]:hover {
     background-color: #5a6268;
 }
 
+/* Add employee form */
+/* Stile für den äußeren Container, der die Formularelemente enthält */
+.add-employee-form-container {
+  border: 1px solid #ccc; /* Rahmen um die Formularelemente */
+  padding: 20px; /* Innenabstand */
+  border-radius: 4px; /* Abgerundete Ecken für den Rahmen */
+  max-width: 60%; /* Maximalbreite des Containers in Prozent */
+  margin: 20px auto 0; /* Zentrieren des Containers horizontal und Abstand nach oben hinzufügen */
+  text-align: left; /* Zentriert den Text im Button horizontal */
+}
+
+/* Stile für die Formulargruppen */
+.add-employee-form-group {
+  width: 100%; /* Volle Breite für die Formulargruppen */
+  margin-bottom: 10px; /* Abstand nach unten hinzufügen */
+}
+
+/* Stile für die Labels */
+.add-employee-form-group label {
+  margin-bottom: 5px;
+}
+
+/* Stile für die Textfelder und das Textarea */
+.add-employee-input,
+.add-employee-dropdown {
+  width: 100%; /* Volle Breite für die Textfelder, das Dropdown-Menü und die Textarea */
+  padding: 5px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box; /* Ändern Sie das Box-Modell auf border-box */
+}
+
+/* Stile für die Textarea */
+.add-employee-textarea {
+  width: 100%; /* Volle Breite für die Textarea */
+  height: 200px; /* Höhe der Textarea */
+  padding: 5px; /* Padding hinzufügen */
+  font-size: 16px;
+  border: 1px solid #ccc; /* Border hinzufügen */
+  border-radius: 4px;
+  box-sizing: border-box; /* Ändern Sie das Box-Modell auf border-box */
+}
 
 
+/* Stile für den Submit-Button */
+.add-employee-submit {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 10px auto 0; /* Zentrieren des Submit-Buttons horizontal und Abstand nach oben hinzufügen */
+  display: block; /* Ändert die Anzeige auf Blockelement */
+  width: fit-content; /* Breite auf die Inhaltsgröße anpassen */
+}
+
+.add-employee-submit:hover {
+  background-color: #0056b3;
+}
 
