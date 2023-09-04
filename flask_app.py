@@ -155,15 +155,24 @@ def add_employee_note(employee_id):
         if form.note_text.data.strip() == '':
             flash("Kein Text eingegeben", "danger")
         elif form.validate_on_submit():
-            # note_text = form.note_text.data  # Hier holst du den Text der Notiz aus dem Formular
-            # Hier könntest du die Notiz in der Datenbank speichern und sie mit dem Mitarbeiter verknüpfen
-            # Zum Beispiel: employee = Employee.query.get(employee_id)
-            #               note = EmployeeNote(text=note_text, employee=employee)
-            #               db_session.add(note)
-            #               db_session.commit()
-            flash("Notiz hinzugefügt", "success")
-            return redirect(url_for('employee_detail', employee_id=employee_id))
+            employee = db_session.query(Employee).filter_by(name=request.args.get('employee')).first()
+            new_note = Note(
+                employee=employee,
+                creator_name=form.author.data,
+                text=form.note_text.data,
+                created_at=datetime.strptime(form.timestamp.data, "%d.%m.%Y - %H:%M Uhr"),
+                note_type=form.note_type.data
+                )
+            db_session.add(new_note)
+            try:
+                db_session.commit()
+                flash("Notiz hinzugefügt", "success")
+            except IntegrityError:
+                db_session.rollback()
+                flash("Fehler beim hinzufügen des Akteneintrags", "danger")
 
+            return redirect(url_for('employee_detail', employee_id=employee_id))
+    db_session.close()
     return render_template('add_employee_note.html', employee_id=employee_id, form=form, title="Notiz hinzufügen")
 
 
