@@ -205,7 +205,6 @@ def settings():
 @app.route('/delete_department/<string:department>')
 @login_required
 def delete_department(department):
-    # Zuerst überprüfen, ob die Abteilung existiert, bevor sie gelöscht wird.
     department_to_delete = db_session.query(Department).filter_by(name=department).first()
 
     if department_to_delete:
@@ -235,16 +234,23 @@ def register():
         if existing_user:
             flash("Benutzername existiert bereits", "danger")
             return render_template('register.html', form=form, title="Registrierung")
-        else:
-            hashed_password = generate_password_hash(password)
-            new_user = RegisteredUser(username=username, password=hashed_password)
-            db_session.add(new_user)
-            try:
-                db_session.commit()
-            except IntegrityError:
-                db_session.rollback()
-                flash("Fehler beim Registrieren des Benutzers", "danger")
-                return render_template('register.html', form=form, title="Registrierung")
+
+        existing_users = db_session.query(RegisteredUser).all()
+        is_first_user = not existing_users
+
+        hashed_password = generate_password_hash(password)
+        new_user = RegisteredUser(username=username, password=hashed_password)
+
+        if is_first_user:
+            new_user.is_admin = True
+
+        db_session.add(new_user)
+        try:
+            db_session.commit()
+        except IntegrityError:
+            db_session.rollback()
+            flash("Fehler beim Registrieren des Benutzers", "danger")
+            return render_template('register.html', form=form, title="Registrierung")
 
         db_session.close()
         return redirect(url_for('login'))
