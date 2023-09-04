@@ -68,27 +68,5 @@ class Department(Base):
     name = Column(String, nullable=False, unique=True)
 
 
-# # Tabelle in der Datenbank erstellen
+# Tabelle in der Datenbank erstellen
 Base.metadata.create_all(engine)
-
-# Mit der Datenbank interagieren
-# Session = sessionmaker(bind=engine)
-# session = Session()
-
-# Notiz hinzufügen
-# Finde den Mitarbeiter "John Doe" in der Datenbank
-# mitarbeiter = session.query(Employee).filter_by(name='Gariot Grau').first()
-
-# Notiz hinzufügen
-# new_note = Note(
-#     employee=mitarbeiter,
-#     creator_name='Alice',
-#     text='Eine wichtige Notiz für Gariot Grau!'
-# )
-
-# Füge die Notiz zur Datenbank hinzu
-# session.add(new_note)
-# session.commit()
-
-# Session schließen
-# session.close()
