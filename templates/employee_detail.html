@@ -28,11 +28,20 @@
     <ul>
         {% for note in employee.notes|sort(attribute='created_at')|reverse %}
             {% if loop.index <= 5 %}
-                <li>{{ note.created_at.strftime('%d.%m.%Y') }} - {{ note.text }}</li>
+                <li>{{ note.creator_name }} - {{ note.created_at.strftime('%d.%m.%Y %H:%M Uhr') }}:<br>
+                    {% if note.note_type == 'notiz' %}
+                        <span class="notiz">{{ note.note_type.capitalize() }}</span>: {{ note.text }}
+                    {% elif note.note_type == 'negativ' %}
+                        <span class="negativ">{{ note.note_type.capitalize() }}</span>: {{ note.text }}
+                    {% elif note.note_type == 'positiv' %}
+                        <span class="positiv">{{ note.note_type.capitalize() }}</span>: {{ note.text }}
+                    {% endif %}
+                </li>
             {% endif %}
         {% endfor %}
     </ul>
 </div>
+
 
 <div class="back-link">
     <a href="{{ url_for('add_employee_note', employee=employee.name, employee_id=employee_id) }}">Akteneintrag hinzufügen</a>

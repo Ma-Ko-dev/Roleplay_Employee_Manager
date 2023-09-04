@@ -79,6 +79,23 @@ a:hover {
     border-radius: 5px;
 }
 
+.notiz {
+    background-color: lightblue; /* Hintergrundfarbe für "notiz" */
+    color: black; /* Textfarbe auf blauem Hintergrund */
+    font-weight: bold; /* Fett gedruckter Text */
+}
+
+.positiv {
+    background-color: lightgreen; /* Hintergrundfarbe für "positiv" */
+    color: black; /* Textfarbe auf grünem Hintergrund */
+    font-weight: bold; /* Fett gedruckter Text */
+}
+
+.negativ {
+    background-color: lightcoral; /* Hintergrundfarbe für "negativ" */
+    color: white; /* Textfarbe auf rotem Hintergrund (weiß für Kontrast) */
+    font-weight: bold; /* Fett gedruckter Text */
+}
 
 .details {
     padding: 20px;
@@ -86,6 +103,11 @@ a:hover {
     margin: 20px auto;
     width: 80%;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.details li {
+    padding: 5px; /* Abstand um den Text */
+    margin-bottom: 5px; /* Abstand zwischen den Einträgen */
 }
 
 /* Stil für Flash-Nachrichten */
