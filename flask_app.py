@@ -79,30 +79,36 @@ def unauthorized():
     return redirect(url_for('login'))
 
 
+# Startseite mit allen Abteilungen anzeigen.
 @app.route('/')
 @login_required
 def index():
+    # Alle Abteilungen abrufen und dem html teil bereitstellen.
     departments = db_session.query(Department.name).distinct().all()
     departments = [department[0] for department in departments]
-
     return render_template('index.html', departments=departments, title="Personal Verwaltungs System")
 
 
+# Abteilungsseite mit allen Angestellten anzeigen.
 @app.route('/department/<string:dep>')
 @login_required
 def department_list(dep):
+    # Alle Angestellten abrufen und dem html teil bereitstellen.
     employees = db_session.query(Employee).filter_by(department=dep).all()
     return render_template('department_list.html', employees=employees, dep=dep, title="Mitarbeiterliste")
 
 
+# Seite fuer Mitarbeiter details.
 @app.route('/employee/<int:employee_id>')
 @login_required
 def employee_detail(employee_id):
+    # Alles details eines Mitarbeiters aufrufen und dem html teil bereitstellen.
     employee = db_session.query(Employee).get(employee_id)
     return render_template('employee_detail.html', employee=employee, employee_id=employee_id,
                            title="Mitarbeiterdetails")
 
 
+# Seite zum hinzufuegen von Mitarbeitern
 @app.route('/add_employee/<string:department>', methods=['GET', 'POST'])
 @login_required
 def add_employee(department):
@@ -111,9 +117,9 @@ def add_employee(department):
 
     if form.validate_on_submit():
         name = form.name.data.strip()
-
         existing_employee = db_session.query(Employee).filter(and_(Employee.name == name,
                                                                    Employee.department == department)).first()
+        # check ob der user bereits existiert. Wenn ja, dann eintrag verhindern und warnung anzeigen.
         if existing_employee:
             flash("Ein Mitarbeiter mit diesem Namen existiert bereits.", "danger")
         else:
@@ -146,12 +152,14 @@ def add_employee(department):
                            title="Mitarbeiter hinzufügen")
 
 
+# Akteneintrag fuer Mitarbeiter hinzufuegen.
 @app.route('/add_employee_note/<int:employee_id>', methods=['GET', 'POST'])
 @login_required
 def add_employee_note(employee_id):
     form = EmployeeNoteForm()
 
     if request.method == 'POST':
+        # Check ob der note text leer ist.
         if form.note_text.data.strip() == '':
             flash("Kein Text eingegeben", "danger")
         elif form.validate_on_submit():
@@ -176,6 +184,7 @@ def add_employee_note(employee_id):
     return render_template('add_employee_note.html', employee_id=employee_id, form=form, title="Notiz hinzufügen")
 
 
+# Einstellungsseite um z.b. Abteilungen hinzuzufuegen und zu loeschen.
 @app.route('/settings', methods=['GET', 'POST'])
 @login_required
 def settings():
@@ -185,6 +194,7 @@ def settings():
 
     if form.validate_on_submit():
         department = form.department.data.strip()
+        # check ob abteilung bereits existiert
         if department in departments:
             flash('Abteilung existiert bereits.', 'danger')
         else:
@@ -202,12 +212,14 @@ def settings():
     return render_template('settings.html', departments=departments, form=form, title="Einstellungen")
 
 
+# Hier werden Abteilungen geloescht.
 @app.route('/delete_department/<string:department>')
 @login_required
 def delete_department(department):
     department_to_delete = db_session.query(Department).filter_by(name=department).first()
 
     if department_to_delete:
+        # kleine sicherheitspruefung ob die abteilung wirklich existiert
         try:
             db_session.delete(department_to_delete)
             db_session.commit()
@@ -222,6 +234,7 @@ def delete_department(department):
     return redirect(url_for('settings'))
 
 
+# Registrierungsseite
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
@@ -232,9 +245,11 @@ def register():
 
         existing_user = db_session.query(RegisteredUser).filter_by(username=username).first()
         if existing_user:
+            # check ob benutzername belegt ist
             flash("Benutzername existiert bereits", "danger")
             return render_template('register.html', form=form, title="Registrierung")
 
+        # abfrage aller eintraege um spaeter zu pruefen ob der erste user admin werden soll
         existing_users = db_session.query(RegisteredUser).all()
         is_first_user = not existing_users
 
@@ -242,6 +257,7 @@ def register():
         new_user = RegisteredUser(username=username, password=hashed_password)
 
         if is_first_user:
+            # wenn keine user vorhanden sind ist der erste registrierte User "Super Admin"
             new_user.is_admin = True
 
         db_session.add(new_user)
@@ -258,6 +274,7 @@ def register():
     return render_template('register.html', form=form, title="Registrierung")
 
 
+# Loginseite
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -278,6 +295,7 @@ def login():
     return render_template('login.html', form=form, title="Anmelden")
 
 
+# Logoutseite
 @app.route('/logout')
 def logout():
     logout_user()
