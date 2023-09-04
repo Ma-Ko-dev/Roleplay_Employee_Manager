@@ -70,7 +70,7 @@ class EmployeeNoteForm(FlaskForm):
 
 @login_manager.user_loader
 def load_user(user_id):
-    return db_session.query(RegisteredUser).get(int(user_id))
+    return db_session.get(RegisteredUser, int(user_id))
 
 
 @login_manager.unauthorized_handler
@@ -94,7 +94,7 @@ def index():
 @login_required
 def department_list(dep):
     # Alle Angestellten abrufen und dem html teil bereitstellen.
-    employees = db_session.query(Employee).filter_by(department=dep).all()
+    employees = db_session.query(Employee).filter(and_(Employee.department == dep)).all()
     return render_template('department_list.html', employees=employees, dep=dep, title="Mitarbeiterliste")
 
 
@@ -103,7 +103,7 @@ def department_list(dep):
 @login_required
 def employee_detail(employee_id):
     # Alles details eines Mitarbeiters aufrufen und dem html teil bereitstellen.
-    employee = db_session.query(Employee).get(employee_id)
+    employee = db_session.get(Employee, employee_id)
     return render_template('employee_detail.html', employee=employee, employee_id=employee_id,
                            title="Mitarbeiterdetails")
 
@@ -120,6 +120,8 @@ def add_employee(department):
         existing_employee = db_session.query(Employee).filter(and_(Employee.name == name,
                                                                    Employee.department == department)).first()
         # check ob der user bereits existiert. Wenn ja, dann eintrag verhindern und warnung anzeigen.
+        # Spaeter muss noch geprueft werden ob der discord handle bereits existiert und entsprechend eine meldung
+        # ausgegeben werden.
         if existing_employee:
             flash("Ein Mitarbeiter mit diesem Namen existiert bereits.", "danger")
         else:
