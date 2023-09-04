@@ -110,18 +110,18 @@ def add_employee(department):
     hire_date_default = datetime.today().strftime("%d.%m.%Y")
 
     if form.validate_on_submit():
-        name = form.name.data
+        name = form.name.data.strip()
 
         existing_employee = db_session.query(Employee).filter(and_(Employee.name == name,
                                                                    Employee.department == department)).first()
         if existing_employee:
             flash("Ein Mitarbeiter mit diesem Namen existiert bereits.", "danger")
         else:
-            position = form.position.data
-            ooc_age = form.ooc_age.data
-            ig_age = form.ig_age.data
+            position = form.position.data.strip()
+            ooc_age = form.ooc_age.data.strip()
+            ig_age = form.ig_age.data.strip()
             hire_date = datetime.strptime(form.hire_date.data, "%d.%m.%Y").date()
-            discord_handle = form.discord_handle.data
+            discord_handle = form.discord_handle.data.strip()
 
             new_employee = Employee(
                 name=name,
@@ -158,8 +158,8 @@ def add_employee_note(employee_id):
             employee = db_session.query(Employee).filter_by(name=request.args.get('employee')).first()
             new_note = Note(
                 employee=employee,
-                creator_name=form.author.data,
-                text=form.note_text.data,
+                creator_name=form.author.data.strip(),
+                text=form.note_text.data.strip(),
                 created_at=datetime.strptime(form.timestamp.data, "%d.%m.%Y - %H:%M Uhr"),
                 note_type=form.note_type.data
                 )
@@ -184,7 +184,7 @@ def settings():
     departments = [department[0] for department in departments]
 
     if form.validate_on_submit():
-        department = form.department.data
+        department = form.department.data.strip()
         if department in departments:
             flash('Abteilung existiert bereits.', 'danger')
         else:
@@ -227,7 +227,7 @@ def register():
     form = RegistrationForm()
 
     if form.validate_on_submit():
-        username = form.username.data.lower()
+        username = form.username.data.lower().strip()
         password = form.password.data
 
         existing_user = db_session.query(RegisteredUser).filter_by(username=username).first()
@@ -263,7 +263,7 @@ def login():
     form = LoginForm()
 
     if form.validate_on_submit():
-        username = form.username.data.lower()
+        username = form.username.data.lower().strip()
         password = form.password.data
 
         user = db_session.query(RegisteredUser).filter_by(username=username).first()
