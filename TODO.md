@@ -10,9 +10,9 @@ Dinge die noch erledigt werden muessen bevor ich das Projekt als funktionsfaehig
 - Mitarbeiter entlassen.
 - Check beim einstellen ob er schonmal in dieser Abteilung eingestellt war.
 - Akteneintraege hinzufuegen. ✅
+  - Seite um alle Akteneintraege anzuzeigen (statt der letzten 5).
 - Akteneintraege editieren.
 - Akteneintraege loeschen.
-- Seite um alle Akteneintraege anzuzeigen (statt der letzten 5).
 - Startseite koennte zeigen: Abteilungen, Mitarbeiterzahl und anderes?
 - Mitarbeiterliste zeigt bei 0 Mitarbeitern "Keine Mitarbeiter gefunden" an. ✅
 - Seperate Einstellungsseite fuer Abteilungseinstellungen.
