@@ -26,7 +26,7 @@
 <div class="details">
     <h2>Letzte Akteneinträge</h2>
     <ul>
-        {% for note in employee.notes|sort(attribute='created_at', reverse=true) %}
+        {% for note in employee.notes|sort(attribute='created_at')|reverse %}
             {% if loop.index <= 5 %}
                 <li>{{ note.created_at.strftime('%d.%m.%Y') }} - {{ note.text }}</li>
             {% endif %}
