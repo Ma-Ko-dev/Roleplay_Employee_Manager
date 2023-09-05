@@ -220,16 +220,21 @@ def settings():
 def delete_department(department):
     department_to_delete = db_session.query(Department).filter_by(name=department).first()
 
+    # kleine sicherheitspruefung ob die abteilung wirklich existiert
     if department_to_delete:
-        # kleine sicherheitspruefung ob die abteilung wirklich existiert
-        try:
-            db_session.delete(department_to_delete)
-            db_session.commit()
-            flash(f"Abteilung '{department}' wurde gelöscht", "success")
-        except Exception as e:
-            flash(f"Fehler beim Löschen der Abteilung '{department}': {str(e)}", "danger")
-        finally:
-            db_session.close()
+        # pruefen ob noch mitarbeiter in der abteilung sind
+        employee_count = db_session.query(Employee).filter_by(department=department).count()
+        if employee_count > 0:
+            flash("Es befinden sich noch Mitarbeiter in der Abteilung.", "danger")
+        else:
+            try:
+                db_session.delete(department_to_delete)
+                db_session.commit()
+                flash(f"Abteilung '{department}' wurde gelöscht", "success")
+            except Exception as e:
+                flash(f"Fehler beim Löschen der Abteilung '{department}': {str(e)}", "danger")
+            finally:
+                db_session.close()
     else:
         flash(f"Abteilung '{department}' wurde nicht gefunden und konnte nicht gelöscht werden", "danger")
 
