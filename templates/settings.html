@@ -43,6 +43,23 @@
     {% endif %}
 </div>
 
+<div class="container">
+    <h3>Benutzer freischalten</h3>
+    {% if users_to_approve %}
+        {% for user in users_to_approve %}
+            <p>
+                {{ user.username.title() }}
+                <a href="{{ url_for('approve_user', user_id=user.id) }}">
+                    <span style="color: green; margin-left: 10px;">&#x2714;</span>
+                </a>
+            </p>
+        {% endfor %}
+    {% else %}
+        <p>Keine Nutzer zum freischalten.</p>
+    {% endif %}
+</div>
+
+
 <div class="back-link">
     <a href="{{ url_for('index') }}">Zurück</a>
 </div>

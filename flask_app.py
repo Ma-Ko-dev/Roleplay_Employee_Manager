@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, flash, request
-from flask_login import login_required, LoginManager, login_user, logout_user
+from flask_login import login_required, LoginManager, login_user, logout_user, current_user
 from sqlalchemy import create_engine, and_
 from sqlalchemy.orm import sessionmaker
 from sqlite3 import IntegrityError
@@ -194,6 +194,7 @@ def settings():
     form = SettingsForm()
     departments = db_session.query(Department.name).distinct().all()
     departments = [department[0] for department in departments]
+    users_to_approve = db_session.query(RegisteredUser).filter_by(is_approved=False).all()
 
     if form.validate_on_submit():
         department = form.department.data.strip()
@@ -212,7 +213,8 @@ def settings():
         return redirect(url_for('settings'))
 
     db_session.close()
-    return render_template('settings.html', departments=departments, form=form, title="Einstellungen")
+    return render_template('settings.html', departments=departments, users_to_approve=users_to_approve,
+                           form=form, title="Einstellungen")
 
 
 # Hier werden Abteilungen geloescht.
@@ -238,6 +240,20 @@ def delete_department(department):
                 db_session.close()
     else:
         flash(f"Abteilung '{department}' wurde nicht gefunden und konnte nicht gelöscht werden", "danger")
+
+    return redirect(url_for('settings'))
+
+
+@app.route('/approve_user/<int:user_id>')
+@login_required
+def approve_user(user_id):
+    if current_user.is_admin:
+        user = db_session.query(RegisteredUser).get(user_id)
+        user.is_approved = True
+        db_session.commit()
+        flash("Benutzer wurde genehmigt", "success")
+    else:
+        flash("Nur Administratoren können Benutzer genehmigen", "danger")
 
     return redirect(url_for('settings'))
 
@@ -293,7 +309,10 @@ def login():
         password = form.password.data
 
         user = db_session.query(RegisteredUser).filter_by(username=username).first()
-        if user and check_password_hash(user.password, password):
+        if not user.is_approved:
+            # User wurde noch nicht freigeschaltet
+            flash("Du bist noch nicht freigeschaltet", "danger")
+        elif user and check_password_hash(user.password, password):
             # Benutzer erfolgreich eingeloggt
             login_user(user)
             db_session.refresh(user)

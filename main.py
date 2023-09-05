@@ -1,4 +1,3 @@
-from datetime import datetime
 from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, Date, DateTime, Float, Boolean
 from sqlalchemy.orm import declarative_base, relationship
 from flask_login import UserMixin
@@ -50,7 +49,7 @@ class MonthlyDuration(Base):
     employee = relationship("Employee", back_populates="monthly_durations")
 
 
-class RegisteredUser(Base, UserMixin):
+class RegisteredUser(UserMixin, Base):
     __tablename__ = 'registered_users'
     id = Column(Integer, primary_key=True)
     username = Column(String, nullable=False, unique=True)
