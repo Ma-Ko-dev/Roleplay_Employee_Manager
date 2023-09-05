@@ -5,6 +5,9 @@ Dies ist ein einfaches Mitarbeiterverwaltungstool, das entwickelt wurde, um Mita
 **Hinweis:** Dieses Projekt ist derzeit in der Entwicklungsphase. Einige Funktionen können fehlen oder fehlerhaft sein, da es sich um ein "Work in Progress" handelt.
 *TODO Liste kann man [hier](TODO.md) finden*
 
+### Showcase Videos (YouTube Links)
+[Showcase Video #1](https://youtu.be/-hXIvWYsIn4)
+
 ## Funktionen
 
 - Registrierung von Benutzern mit sicher gespeicherten Passwörtern
