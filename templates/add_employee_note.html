@@ -17,7 +17,7 @@
   <div class="add-employee-form-container">
     <div class="add-employee-form-group">
       <label for="{{ form.author.id }}">{{ form.author.label.text }}:</label>
-      <input type="text" id="author" name="author" class="add-employee-input" value="{{ current_user.username.capitalize() }}" readonly>
+      <input type="text" id="author" name="author" class="add-employee-input" value="{{ current_user.username.title() }}" readonly>
     </div>
     <div class="add-employee-form-group">
       <label for="{{ form.timestamp.id }}">{{ form.timestamp.label.text }}:</label>
