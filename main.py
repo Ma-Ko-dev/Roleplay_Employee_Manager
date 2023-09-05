@@ -56,6 +56,7 @@ class RegisteredUser(Base, UserMixin):
     username = Column(String, nullable=False, unique=True)
     password = Column(String, nullable=False)
     is_admin = Column(Boolean, default=False)
+    is_approved = Column(Boolean, default=False)
 
     def __init__(self, username, password):
         self.username = username

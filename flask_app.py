@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlite3 import IntegrityError
 from main import Employee, RegisteredUser, Department, Note
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, SelectField, TextAreaField
+from wtforms import StringField, PasswordField, SubmitField, SelectField, TextAreaField, BooleanField
 from wtforms.validators import InputRequired, EqualTo, DataRequired
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime
@@ -31,6 +31,7 @@ class RegistrationForm(FlaskForm):
     username = StringField('Benutzername', validators=[InputRequired()])
     password = PasswordField('Passwort', validators=[InputRequired()])
     confirm_password = PasswordField('Passwort bestätigen', validators=[InputRequired(), EqualTo('password')])
+    is_approved = BooleanField('Freigeschaltet', default=False)
     submit = SubmitField('Registrieren')
 
 
@@ -264,8 +265,9 @@ def register():
         new_user = RegisteredUser(username=username, password=hashed_password)
 
         if is_first_user:
-            # wenn keine user vorhanden sind ist der erste registrierte User "Super Admin"
+            # wenn keine user vorhanden sind ist der erste registrierte User "Super Admin" und sofort freigeschaltet
             new_user.is_admin = True
+            new_user.is_approved = True
 
         db_session.add(new_user)
         try:
