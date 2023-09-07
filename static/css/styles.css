@@ -44,7 +44,7 @@ a:hover {
     margin-top: 25px;
 }
 
-.nav {
+.custom-nav {
     position: absolute;
     top: 0;
     right: 0;
@@ -53,14 +53,23 @@ a:hover {
     text-align: right;
 }
 
-.nav a {
+.custom-nav a {
     margin-left: 20px;
     text-decoration: none;
     color: white;
 }
 
-.nav a:hover {
+.custom-nav a:hover {
     color: #e74c3c;
+}
+
+.nav-pills .nav-link {
+    color: black; /* Textfarbe der Tabs */
+}
+
+.nav-pills .nav-link.active {
+    background-color: #5a6268; /* Hintergrundfarbe des aktiven Tabs */
+    color: white; /* Textfarbe des aktiven Tabs */
 }
 
 .center-container {
@@ -152,7 +161,8 @@ a:hover {
 
 /* Gemeinsame Styles für Container */
 .container {
-    width: 20%;
+    width: auto;
+    max-width: 50%;
     margin: 20px auto;
     background-color: #f9f9f9;
     padding: 20px;

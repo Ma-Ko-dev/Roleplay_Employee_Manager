@@ -15,53 +15,77 @@
         {% endif %}
     {% endwith %}
 
-    <form method="POST">
-        {{ form.hidden_tag() }}
-        <div class="input-container">
-            <label>Abteilung hinzufügen</label>
-            {{ form.department(class='input-field') }}
+    <!-- Nav-Tabs für Abteilungsmanagement und Usermanagement -->
+    <ul class="nav nav-pills nav-tabs" id="settingsTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="departments-tab" data-toggle="tab" href="#departments" role="tab">Abteilungsmanagement</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="users-tab" data-toggle="tab" href="#users" role="tab">Usermanagement</a>
+        </li>
+    </ul>
+
+    <!-- Tab-Inhalt -->
+    <div class="tab-content" id="settingsTabsContent">
+        <div class="tab-pane fade mt-4 show active" id="departments" role="tabpanel">
+            <!-- Hier den Inhalt für das Abteilungsmanagement-Tab einfügen -->
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="input-container">
+                    <label>Abteilung hinzufügen</label>
+                    {{ form.department(class='input-field') }}
+                </div>
+                <div>
+                    {{ form.submit() }}
+                </div>
+            </form>
+
+            <h3 class="mt-5">Aktuelle Abteilungen</h3>
+            {% if departments %}
+                {% for department in departments %}
+                    <p>
+                        {{ department }}
+                        <a href="{{ url_for('delete_department', department=department) }}">
+                            <span style="color: red; margin-left: 10px;">&#x2716;</span>
+                        </a>
+                    </p>
+                {% endfor %}
+            {% else %}
+                <p>Keine Abteilungen gefunden.</p>
+            {% endif %}
         </div>
-        <div>
-            {{ form.submit() }}
+
+        <div class="tab-pane fade mt-4" id="users" role="tabpanel">
+            <!-- Hier den Inhalt für das Usermanagement-Tab einfügen -->
+            <h3>Benutzer freischalten</h3>
+            {% if users_to_approve %}
+                {% for user in users_to_approve %}
+                    <p>
+                        {{ user.username.title() }}
+                        <a href="{{ url_for('approve_user', user_id=user.id) }}">
+                            <span style="color: green; margin-left: 10px;">&#x2714;</span>
+                        </a>
+                    </p>
+                {% endfor %}
+            {% else %}
+                <p>Keine Nutzer zum freischalten.</p>
+            {% endif %}
         </div>
-    </form>
+    </div>
+
+    <div class="back-link">
+        <a href="{{ url_for('index') }}">Zurück</a>
+    </div>
 </div>
 
-<div class="container">
-    <h3>Aktuelle Abteilungen</h3>
-    {% if departments %}
-        {% for department in departments %}
-            <p>
-                {{ department }}
-                <a href="{{ url_for('delete_department', department=department) }}">
-                    <span style="color: red; margin-left: 10px;">&#x2716;</span>
-                </a>
-            </p>
-        {% endfor %}
-    {% else %}
-        <p>Keine Abteilungen gefunden.</p>
-    {% endif %}
-</div>
-
-<div class="container">
-    <h3>Benutzer freischalten</h3>
-    {% if users_to_approve %}
-        {% for user in users_to_approve %}
-            <p>
-                {{ user.username.title() }}
-                <a href="{{ url_for('approve_user', user_id=user.id) }}">
-                    <span style="color: green; margin-left: 10px;">&#x2714;</span>
-                </a>
-            </p>
-        {% endfor %}
-    {% else %}
-        <p>Keine Nutzer zum freischalten.</p>
-    {% endif %}
-</div>
-
-
-<div class="back-link">
-    <a href="{{ url_for('index') }}">Zurück</a>
-</div>
+<script>
+    // Aktiviert die Bootstrap-Tabs
+    $(document).ready(function() {
+        $('#settingsTabs a').click(function(e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+    });
+</script>
 
 {% endblock %}

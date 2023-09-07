@@ -171,3 +171,4 @@ cython_debug/
 /.idea/inspectionProfiles/Project_Default.xml
 /employee.db-journal
 /employee - Kopie.db
+/templates/settings_backup.html
