@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, Date, DateTime, Float, Boolean
+from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, Date, DateTime, Float, Boolean, Table
 from sqlalchemy.orm import declarative_base, relationship
 from flask_login import UserMixin
 
@@ -57,6 +57,9 @@ class RegisteredUser(UserMixin, Base):
     is_admin = Column(Boolean, default=False)
     is_approved = Column(Boolean, default=False)
 
+    # Definiere die Beziehung zu Abteilungen
+    departments = relationship('Department', secondary='user_departments', back_populates='users')
+
     def __init__(self, username, password):
         self.username = username
         self.password = password
@@ -67,6 +70,17 @@ class Department(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False, unique=True)
 
+    # Definiere die Beziehung zu Benutzern
+    users = relationship('RegisteredUser', secondary='user_departments', back_populates='departments')
+
+
+# Erstelle die Verknüpfungstabelle user_departments
+user_departments = Table(
+    'user_departments',
+    Base.metadata,
+    Column('user_id', Integer, ForeignKey('registered_users.id')),
+    Column('department_id', Integer, ForeignKey('departments.id'))
+)
 
 # Tabelle in der Datenbank erstellen
 Base.metadata.create_all(engine)

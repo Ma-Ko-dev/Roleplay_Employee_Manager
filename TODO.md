@@ -4,7 +4,7 @@ Dinge die noch erledigt werden muessen bevor ich das Projekt als funktionsfaehig
 - Abteilungen loeschen ✅
   - Check einfuegen ob noch Mitarbeiter in der Abteilung vorhanden sind. ✅
 - Registrierte Nutzer muessen freigeschaltet werden. ✅
-- Nutzer haben nur zu bestimmten Abteilungen zugriff.
+- Nutzer haben nur zu bestimmten Abteilungen Zugriff.
 - Mitarbeiter hinzufuegen. ✅
 - Mitarbeiter editieren (z.b. Rang oder alter).
 - Mitarbeiter entlassen.
