@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_login import login_required, LoginManager, login_user, logout_user, current_user
+from flask_paginate import Pagination
 from sqlalchemy import create_engine, and_
 from sqlalchemy.orm import sessionmaker
 from sqlite3 import IntegrityError
@@ -195,6 +196,16 @@ def settings():
     departments = db_session.query(Department.name).distinct().all()
     departments = [department[0] for department in departments]
     users_to_approve = db_session.query(RegisteredUser).filter_by(is_approved=False).all()
+    users = db_session.query(RegisteredUser).all()
+
+    page = request.args.get('page', type=int, default=1)
+    per_page = 10  # Anzahl der Benutzer pro Seite
+    offset = (page - 1) * per_page
+    total = len(users)  # Die Gesamtanzahl der Benutzer
+    pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap5')
+    pagination.next_label = "Weiter"
+    pagination.prev_label = "Zurück"
+    paginated_users = users[offset:offset + per_page]
 
     if form.validate_on_submit():
         department = form.department.data.strip()
@@ -214,7 +225,7 @@ def settings():
 
     db_session.close()
     return render_template('settings.html', departments=departments, users_to_approve=users_to_approve,
-                           form=form, title="Einstellungen")
+                           form=form, users=paginated_users, pagination=pagination, title="Einstellungen")
 
 
 # Hier werden Abteilungen geloescht.
