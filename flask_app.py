@@ -199,7 +199,7 @@ def settings():
     users = db_session.query(RegisteredUser).all()
 
     page = request.args.get('page', type=int, default=1)
-    per_page = 10  # Anzahl der Benutzer pro Seite
+    per_page = 2  # Anzahl der Benutzer pro Seite
     offset = (page - 1) * per_page
     total = len(users)  # Die Gesamtanzahl der Benutzer
     pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap5')
