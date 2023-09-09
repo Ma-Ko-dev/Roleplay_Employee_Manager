@@ -269,6 +269,28 @@ def approve_user(user_id):
     return redirect(url_for('settings'))
 
 
+@app.route('/user_detail/<int:user_id>')
+@login_required
+def user_detail(user_id):
+    user = db_session.query(RegisteredUser).get(user_id)
+    all_departments = db_session.query(Department).all()
+    user_data = {}
+
+    # Durch alle Abteilungen iterieren und überprüfen, ob der Benutzer in dieser Abteilung ist
+    for department in all_departments:
+        user_data[department.name] = department in user.departments
+
+    # TODO Departments zuweisen in eigener route. Beispielcode s.u.
+    # department zuweisen
+    # departments_to_assign = db_session.query(Department).filter(Department.id.in_([2])).all()
+    # user.departments.extend(departments_to_assign)
+    # db_session.commit()
+
+    departments = db_session.query(Department.name).distinct().all()
+
+    return render_template('user_detail.html', user_data=user_data, user=user, departments=departments)
+
+
 # Registrierungsseite
 @app.route('/register', methods=['GET', 'POST'])
 def register():
