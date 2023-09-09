@@ -121,7 +121,20 @@ a:hover {
 
 /* Stil für Flash-Nachrichten */
 .flash-messages {
-    margin-bottom: 20px;
+    position: relative;
+}
+
+.flash-message {
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.flash-message.fade-out {
+    opacity: 0;
+    height: 0; /* Höhe auf 0 setzen */
+    margin-bottom: 0; /* Abstand auf 0 setzen */
+    padding-top: 0; /* Oberen Abstand auf 0 setzen */
+    padding-bottom: 0; /* Unteren Abstand auf 0 setzen */
 }
 
 .flash-message.danger {

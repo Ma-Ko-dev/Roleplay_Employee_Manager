@@ -9,7 +9,7 @@
         {% if messages %}
             <div class="flash-messages">
                 {% for category, message in messages %}
-                    <div class="flash-message {{ category }}">{{ message }}</div>
+                    <div class="flash-message {{ category }}" data-duration="{{ message.duration }}">{{ message }}</div>
                 {% endfor %}
             </div>
         {% endif %}
@@ -94,6 +94,7 @@
 </div>
 
 <script>
+// Tab anzeige und speicherung
 $(document).ready(function() {
     // Aktiviert die Bootstrap-Tabs
     $('#settingsTabs a').click(function(e) {
