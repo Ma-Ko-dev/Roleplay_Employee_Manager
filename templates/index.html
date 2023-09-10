@@ -1,29 +1,30 @@
 {% extends "layout.html" %}
 
 {% block content %}
-
-{% if departments %}
-<table>
-    <thead>
-        <tr>
-            <th>Abteilungen</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for department in departments %}
-        <tr>
-            <td>
-                <a href="{{ url_for('department_list', dep=department) }}">{{ department }}</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% else %}
-<div class="center-container">
-    <div class="center-text">Keine Abteilungen vorhanden</div>
+<div class="container mt-5 d-flex justify-content-center"> <!-- Zentriert den Inhalt horizontal -->
+    {% if departments %}
+    <div class="table-container" style="min-width: 30%;"> <!-- Ändere die maximale Breite nach Bedarf -->
+        <table class="table">
+            <thead>
+                <tr class="text-center">
+                    <th style="background-color: #CCCCCC;">Abteilungen</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for department in departments %}
+                <tr class="text-center">
+                    <td>
+                        <a href="{{ url_for('department_list', dep=department) }}" class="link-custom">{{ department }}</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="text-center">
+        <p class="h4">Keine Abteilungen vorhanden</p>
+    </div>
+    {% endif %}
 </div>
-{% endif %}
-
-
 {% endblock %}

@@ -172,3 +172,4 @@ cython_debug/
 /employee.db-journal
 /employee - Kopie.db
 /templates/settings_backup.html
+/static/css/styles-backup.css
