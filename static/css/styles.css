@@ -13,8 +13,6 @@ body {
     color: #e74c3c;
     text-decoration: underline;
 }
-
-/* Hover-Effekt für die gesamte Spalte */
 .clickable:hover {
     background-color: #f0f0f0; /* Hintergrundfarbe ändern */
     cursor: pointer; /* Zeiger ändern, um anzuzeigen, dass es klickbar ist */
@@ -27,7 +25,11 @@ table.table thead th.custom-th {
     background-color: #CCCCCC;
 }
 
-
+/* Benutzerdefinierte CSS-Klasse für den abgerundeten Container */
+.rounded-container {
+    border-radius: 10px;
+    overflow: hidden;
+}
 
 
 
