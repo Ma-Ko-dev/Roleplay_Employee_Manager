@@ -119,13 +119,15 @@ def add_employee(department):
 
     if form.validate_on_submit():
         name = form.name.data.strip()
+        dchandle = form.discord_handle.data.strip()
         existing_employee = db_session.query(Employee).filter(and_(Employee.name == name,
                                                                    Employee.department == department)).first()
+        existing_dc_handle = db_session.query(Employee).filter(and_(Employee.discord_handle == dchandle)).first()
         # check ob der user bereits existiert. Wenn ja, dann eintrag verhindern und warnung anzeigen.
         # Spaeter muss noch geprueft werden ob der discord handle bereits existiert und entsprechend eine meldung
         # ausgegeben werden.
-        if existing_employee:
-            flash("Ein Mitarbeiter mit diesem Namen existiert bereits.", "danger")
+        if existing_employee or existing_dc_handle:
+            flash("Ein Mitarbeiter mit diesem Namen oder Discord Handle existiert bereits.", "danger")
         else:
             position = form.position.data.strip()
             ooc_age = form.ooc_age.data.strip()
@@ -142,14 +144,16 @@ def add_employee(department):
                 hire_date=hire_date,
                 discord_handle=discord_handle
             )
-            db_session.add(new_employee)
             try:
+                db_session.add(new_employee)
                 db_session.commit()
                 flash("Mitarbeiter hinzugefügt", "success")
             except IntegrityError:
                 db_session.rollback()
                 flash("Fehler beim hinzufügen des Mitarbeiters", "danger")
-
+            except Exception:
+                db_session.rollback()
+                flash("Fehler beim hinzufügen des Mitarbeiters", "danger")
             return redirect(url_for('department_list', dep=department))
     db_session.close()
     return render_template('add_employee.html', form=form, dep=department, hire_date_default=hire_date_default,

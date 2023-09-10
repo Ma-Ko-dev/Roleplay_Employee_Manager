@@ -2,10 +2,10 @@
 
 {% block content %}
 
-<div class="container">
-    <h2>Mitarbeiter hinzufügen</h2>
+<div class="container mx-auto">
+    <h2 class="text-center">Mitarbeiter hinzufügen</h2>
 
-        <!-- Hier die Flash-Nachrichten anzeigen -->
+    <!-- Hier die Flash-Nachrichten anzeigen -->
     {% with messages = get_flashed_messages(with_categories=True) %}
         {% if messages %}
             <div class="flash-messages">
@@ -19,44 +19,42 @@
     <form method="POST">
         {{ form.hidden_tag() }}
         <div class="form-grid">
-            <div class="input-container">
+            <div class="form-group col-sm-6 mx-auto">
                 <label>{{ form.name.label.text }}:</label>
-                {{ form.name(class='input-field') }}
+                {{ form.name(class='form-control') }}
             </div>
-            <div class="input-container">
+            <div class="form-group col-sm-6 mx-auto">
                 <label>{{ form.department.label.text }}:</label>
-                    <input type="text" name="department" class="input-field" value="{{ dep }}" readonly>
+                <input type="text" name="department" class="form-control" value="{{ dep }}" readonly>
             </div>
-            <div class="input-container">
+            <div class="form-group col-sm-6 mx-auto">
                 <label>{{ form.position.label.text }}:</label>
-                {{ form.position(class='input-field') }}
+                {{ form.position(class='form-control') }}
             </div>
-            <div class="input-container">
+            <div class="form-group col-sm-6 mx-auto">
                 <label>{{ form.ooc_age.label.text }}:</label>
-                {{ form.ooc_age(class='input-field') }}
+                {{ form.ooc_age(class='form-control') }}
             </div>
-            <div class="input-container">
+            <div class="form-group col-sm-6 mx-auto">
                 <label>{{ form.ig_age.label.text }}:</label>
-                {{ form.ig_age(class='input-field') }}
+                {{ form.ig_age(class='form-control') }}
             </div>
-            <div class="input-container">
+            <div class="form-group col-sm-6 mx-auto">
                 <label>{{ form.hire_date.label.text }}:</label>
-                    <input type="text" name="hire_date" class="input-field" value="{{ hire_date_default }}">
+                <input type="text" name="hire_date" class="form-control" value="{{ hire_date_default }}">
             </div>
-            <div class="input-container">
+            <div class="form-group col-sm-6 mx-auto">
                 <label>{{ form.discord_handle.label.text }}:</label>
-                {{ form.discord_handle(class='input-field') }}
+                {{ form.discord_handle(class='form-control') }}
             </div>
 
-            <div class="submit-button-container">
-                {{ form.submit() }}
+            <!-- Ändere die Klasse des primären Buttons und füge benutzerdefinierten Leerraum hinzu -->
+            <div class="form-group mt-3 text-center">
+                <button type="submit" class="btn btn-secondary">{{ form.submit.label }}</button>
+                <a href="{{ url_for('department_list', dep=dep) }}" class="btn btn-secondary ml-2">Zurück zur Abteilungsliste</a>
             </div>
         </div>
     </form>
-</div>
-
-<div class="back-link">
-    <a href="{{ url_for('department_list', dep=dep) }}">Zurück zur Abteilungsliste</a>
 </div>
 
 {% endblock %}
