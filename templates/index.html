@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container mt-5 d-flex justify-content-center">
     {% if departments %}
-    <div class="table-container" style="min-width: 30%;">
+    <div class="table-container" style="min-width: 30%; border-radius: 10px; overflow: hidden;">
         <table class="table">
             <thead>
                 <tr class="text-center">
@@ -13,7 +13,7 @@
             <tbody>
                 {% for department in departments %}
                 <tr class="text-center">
-                    <td>
+                    <td class="clickable" data-href="{{ url_for('department_list', dep=department) }}">
                         <a href="{{ url_for('department_list', dep=department) }}" class="link-custom">{{ department }}</a>
                     </td>
                 </tr>
@@ -27,4 +27,13 @@
     </div>
     {% endif %}
 </div>
+
+<script>
+    // JavaScript, um die gesamte Zelle anklickbar zu machen
+    document.querySelectorAll(".clickable").forEach(function(cell) {
+        cell.addEventListener("click", function() {
+            window.location = this.getAttribute("data-href");
+        });
+    });
+</script>
 {% endblock %}

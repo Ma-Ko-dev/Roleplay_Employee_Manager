@@ -11,10 +11,17 @@ body {
 
 .link-custom:hover {
     color: #e74c3c;
+    text-decoration: underline;
+}
+
+/* Hover-Effekt für die gesamte Spalte */
+.clickable:hover {
+    background-color: #f0f0f0; /* Hintergrundfarbe ändern */
+    cursor: pointer; /* Zeiger ändern, um anzuzeigen, dass es klickbar ist */
 }
 
 /* Benutzerdefinierter Stil für das <th>-Element */
-.custom-th {
+table.table thead th.custom-th {
     font-size: 21px;
     text-decoration: underline;
     background-color: #CCCCCC;
