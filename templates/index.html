@@ -1,13 +1,13 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="container mt-5 d-flex justify-content-center"> <!-- Zentriert den Inhalt horizontal -->
+<div class="container mt-5 d-flex justify-content-center">
     {% if departments %}
-    <div class="table-container" style="min-width: 30%;"> <!-- Ändere die maximale Breite nach Bedarf -->
+    <div class="table-container" style="min-width: 30%;">
         <table class="table">
             <thead>
                 <tr class="text-center">
-                    <th style="background-color: #CCCCCC;">Abteilungen</th>
+                    <th class="custom-th">Abteilungen</th>
                 </tr>
             </thead>
             <tbody>

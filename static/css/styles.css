@@ -2,7 +2,7 @@ body {
     background-color: #f4f4f4;
 }
 
-/* Individuelle Links */
+/* Benutzerdefinierter Stil fuer Links */
 .link-custom {
     color: #333;
     font-weight: bold;
@@ -11,4 +11,53 @@ body {
 
 .link-custom:hover {
     color: #e74c3c;
+}
+
+/* Benutzerdefinierter Stil für das <th>-Element */
+.custom-th {
+    font-size: 21px;
+    text-decoration: underline;
+    background-color: #CCCCCC;
+}
+
+
+
+
+
+/* Stil und Fade-out fuer Flash-Nachrichten */
+.flash-messages {
+    position: relative;
+}
+
+.flash-message {
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.flash-message.fade-out {
+    opacity: 0;
+    height: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.flash-message.danger {
+    background-color: #e74c3c;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.flash-message.success {
+    background-color: lightgreen;
+    color: black;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-align: center;
 }

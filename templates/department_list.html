@@ -4,42 +4,55 @@
     <!-- Hier die Flash-Nachrichten anzeigen -->
     {% with messages = get_flashed_messages(with_categories=True) %}
         {% if messages %}
-            <div class="flash-messages">
-                {% for category, message in messages %}
-                    <div class="flash-message {{ category }}">{{ message }}</div>
-                {% endfor %}
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col">
+                        {% for category, message in messages %}
+                            <div class="flash-message {{ category }}" data-duration="{{ message.duration }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
         {% endif %}
     {% endwith %}
 
-{% if employees %}
-<table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Position</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for employee in employees %}
-        <tr>
-            <td><a href="{{ url_for('employee_detail', employee_id=employee.id) }}">{{ employee.name }}</a></td>
-            <td>{{ employee.position }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% else %}
-<div class="center-container">
-    <div class="center-text">Keine Mitarbeiter vorhanden</div>
-</div>
-{% endif %}
+    <div class="container mt-4">
+        {% if employees %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" class="custom-th">Name</th>
+                        <th scope="col" class="custom-th">Position</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for employee in employees %}
+                        <tr>
+                            <td>
+                                <a href="{{ url_for('employee_detail', employee_id=employee.id) }}" class="link-custom">{{ employee.name }}</a>
+                            </td>
+                            <td>{{ employee.position }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="alert alert-info" role="alert">
+                Keine Mitarbeiter vorhanden
+            </div>
+        {% endif %}
+    </div>
 
-<div class="back-link">
-    <a href="{{ url_for('add_employee', department=dep) }}">Mitarbeiter hinzufügen</a>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col">
+            <a class="btn btn-secondary mr-2" href="{{ url_for('add_employee', department=dep) }}">Mitarbeiter hinzufügen</a>
+            <a class="btn btn-secondary mr-2" href="/">Zurück zur Startseite</a>
+        </div>
+    </div>
 </div>
-<div class="back-link">
-    <a href="/">Zurück zur Startseite</a>
-</div>
+
+
+
 
 {% endblock %}
