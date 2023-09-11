@@ -1,4 +1,4 @@
-# Mitarbeiterverwaltungstool
+# Mitarbeiter Verwaltungstool
 
 Dies ist ein einfaches Mitarbeiterverwaltungstool, das entwickelt wurde, um Mitarbeiterdaten effizient zu verwalten. Es ermöglicht die Registrierung von Benutzern, das Anmelden, Anzeigen von Mitarbeiterinformationen und vieles mehr.
 
