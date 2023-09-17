@@ -17,7 +17,7 @@
     {% endwith %}
 
     <div class="container mt-4">
-        <div class="rounded-container">
+        <div class="rounded-container mx-auto col-md-6">
             {% if employees %}
                 <table class="table">
                     <thead>
@@ -42,14 +42,9 @@
                     Keine Mitarbeiter vorhanden
                 </div>
             {% endif %}
-        </div>
-    </div>
-
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col">
+            <div class="mt-4">
                 <a class="btn btn-success mr-2" href="{{ url_for('add_employee', department=dep) }}">Mitarbeiter hinzufügen</a>
-                <a class="btn btn-secondary mr-2" href="/">Zurück zur Startseite</a>
+                <a class="btn btn-secondary" href="/">Zurück zur Startseite</a>
             </div>
         </div>
     </div>
