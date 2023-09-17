@@ -1,48 +1,57 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <!-- Hier die Flash-Nachrichten anzeigen -->
-    {% with messages = get_flashed_messages(with_categories=True) %}
-        {% if messages %}
-            <div class="flash-messages">
-                {% for category, message in messages %}
-                    <div class="flash-message {{ category }}" data-duration="{{ message.duration }}">{{ message }}</div>
-                {% endfor %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Notiz hinzufügen</h2>
+
+                    <!-- Hier die Flash-Nachrichten anzeigen -->
+                    {% with messages = get_flashed_messages(with_categories=True) %}
+                        {% if messages %}
+                            <div class="alert alert-dismissible alert-{{ messages[0][0] }}">
+                                <ul class="list-unstyled mb-0">
+                                    {% for category, message in messages %}
+                                        <li>{{ message }}</li>
+                                    {% endfor %}
+                                </ul>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        <div class="mb-3">
+                            <label for="author" class="form-label">{{ form.author.label.text }}:</label>
+                            <input type="text" id="author" name="author" class="form-control" value="{{ current_user.username.title() }}" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="timestamp" class="form-label">{{ form.timestamp.label.text }}:</label>
+                            <input type="text" id="timestamp" name="timestamp" class="form-control" value="{{ form.timestamp.data }}" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="note_type" class="form-label">{{ form.note_type.label.text }}:</label>
+                            <select id="note_type" name="note_type" class="form-select">
+                                <option value="notiz">Notiz</option>
+                                <option value="positiv">Positiv</option>
+                                <option value="negativ">Negativ</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="note_text" class="form-label">{{ form.note_text.label.text }}:</label>
+                            <textarea id="note_text" name="note_text" class="form-control" style="height: 200px;" placeholder="Text eingeben"></textarea>
+                        </div>
+                        <div class="text-center">
+                            {{ form.submit(class='btn btn-primary') }}
+                            <a href="{{ url_for('employee_detail', employee_id=employee_id) }}" class="btn btn-secondary ml-2">Zurück zur Mitarbeiterdetails</a>
+                        </div>
+                    </form>
+                </div>
             </div>
-        {% endif %}
-    {% endwith %}
-
-<form method="POST">
-  {{ form.hidden_tag() }}
-  <div class="add-employee-form-container">
-    <div class="add-employee-form-group">
-      <label for="{{ form.author.id }}">{{ form.author.label.text }}:</label>
-      <input type="text" id="author" name="author" class="add-employee-input" value="{{ current_user.username.title() }}" readonly>
+        </div>
     </div>
-    <div class="add-employee-form-group">
-      <label for="{{ form.timestamp.id }}">{{ form.timestamp.label.text }}:</label>
-      <input type="text" id="timestamp" name="timestamp" class="add-employee-input" value="{{ form.timestamp.data }}" readonly>
-    </div>
-    <div class="add-employee-form-group">
-      <label for="{{ form.note_type.id }}">{{ form.note_type.label.text }}:</label>
-      <select id="note_type" name="note_type" class="add-employee-dropdown">
-        <option value="notiz">Notiz</option>
-        <option value="positiv">Positiv</option>
-        <option value="negativ">Negativ</option>
-      </select>
-    </div>
-    <div class="add-employee-form-group">
-      <label for="{{ form.note_text.id }}">{{ form.note_text.label.text }}:</label>
-      <textarea id="note_text" name="note_text" class="add-employee-textarea" placeholder="Text eingeben"></textarea>
-    </div>
-      <div>
-    {{ form.submit() }}
-  </div>
-  </div>
-
-  <div class="back-link">
-    <a href="{{ url_for('employee_detail', employee_id=employee_id) }}">Zurück zur Mitarbeiterdetails</a>
 </div>
-</form>
-
 {% endblock %}
