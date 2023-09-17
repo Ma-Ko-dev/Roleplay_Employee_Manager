@@ -1,37 +1,48 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="container">
-    <h2>Registrierung</h2>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Registrierung</h2>
 
-        <!-- Hier die Flash-Nachrichten anzeigen -->
-    {% with messages = get_flashed_messages(with_categories=True) %}
-        {% if messages %}
-            <div class="flash-messages">
-                {% for category, message in messages %}
-                    <div class="flash-message {{ category }}">{{ message }}</div>
-                {% endfor %}
+                    <!-- Flash-Nachrichten anzeigen -->
+                    {% with messages = get_flashed_messages(with_categories=True) %}
+                        {% if messages %}
+                            <div class="alert alert-dismissible alert-{{ messages[0][0] }}">
+                                <ul class="list-unstyled mb-0">
+                                    {% for category, message in messages %}
+                                        <li>{{ message }}</li>
+                                    {% endfor %}
+                                </ul>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Benutzername:</label>
+                            {{ form.username(class='form-control', id='username') }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Passwort:</label>
+                            {{ form.password(class='form-control', id='password') }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirm_password" class="form-label">Passwort bestätigen:</label>
+                            {{ form.confirm_password(class='form-control', id='confirm_password') }}
+                        </div>
+                        <div class="text-center">
+                            {{ form.submit(class='btn btn-primary') }}
+                        </div>
+                    </form>
+                </div>
             </div>
-        {% endif %}
-    {% endwith %}
-
-    <form method="POST">
-        {{ form.hidden_tag() }}
-        <div class="input-container">
-            <label>Benutzername</label>
-            {{ form.username(class='input-field') }}
         </div>
-        <div class="input-container">
-            <label>Passwort</label>
-            {{ form.password(class='input-field') }}
-        </div>
-        <div class="input-container">
-            <label>Passwort bestätigen</label>
-            {{ form.confirm_password(class='input-field') }}
-        </div>
-        <div>
-            {{ form.submit() }}
-        </div>
-    </form>
+    </div>
 </div>
 {% endblock %}
