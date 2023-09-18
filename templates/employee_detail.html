@@ -18,8 +18,9 @@
     <div class="container mt-4">
         <div class="row">
             <div class="col-md-6">
-                <div class="card" style="height: 100%;">
+                <div class="card mb-2" style="min-height: 350px; overflow-y: auto;">
                     <div class="card-body">
+                        <!-- Inhalt für die erste Karte -->
                         <h1 class="card-title">{{ employee.name }}</h1>
                         <p class="card-text"><strong>Abteilung:</strong> {{ employee.department }}</p>
                         <p class="card-text"><strong>Position:</strong> {{ employee.position }}</p>
@@ -30,10 +31,19 @@
                         <p class="card-text"><strong>Discord Handle:</strong> {{ employee.discord_handle }}</p>
                     </div>
                 </div>
+                <!-- Hier die dritte Karte (Bild oder Inhalt) ohne Margin -->
+                <div class="card flex-grow-1" style="max-height: 337px; overflow-y: hidden;">
+                    <div class="card-body">
+                        <!-- Inhalt für die dritte Karte (Bild) -->
+                        <!-- Hier können Sie Ihr Bild oder andere Inhalte hinzufügen -->
+                        <img src="{{ url_for('static', filename='images/diagram_beispiel.png') }}" alt="Beispiel-Diagramm" style="width: 100%; height: 85%;">
+                    </div>
+                </div>
             </div>
             <div class="col-md-6">
                 <div class="card" style="max-height: 700px; overflow-y: auto;">
                     <div class="card-body">
+                        <!-- Inhalt für die zweite Karte -->
                         <h2 class="card-title">Letzte Akteneinträge</h2>
                         <ul class="list-group">
                             {% for note in employee.notes|sort(attribute='created_at')|reverse %}
@@ -58,19 +68,18 @@
         </div>
     </div>
 
-<div class="container mt-3">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="btn-toolbar" role="toolbar" aria-label="Button toolbar">
-                <div class="btn-group mr-2" role="group">
-                    <a class="btn btn-success" href="{{ url_for('add_employee_note', employee=employee.name, employee_id=employee_id) }}">Akteneintrag hinzufügen</a>
-                </div>
-                <div class="btn-group" role="group">
-                    <a class="btn btn-secondary mx-2" href="{{ url_for('department_list', dep=employee.department) }}">Zurück zur Mitarbeiterliste</a>
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="btn-toolbar" role="toolbar" aria-label="Button toolbar">
+                    <div class="btn-group mr-2" role="group">
+                        <a class="btn btn-success" href="{{ url_for('add_employee_note', employee=employee.name, employee_id=employee_id) }}">Akteneintrag hinzufügen</a>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <a class="btn btn-secondary mx-2" href="{{ url_for('department_list', dep=employee.department) }}">Zurück zur Mitarbeiterliste</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
 {% endblock %}
